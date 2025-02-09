@@ -1,0 +1,19 @@
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    right: 0%;
+  }
+
+.png {
+  max-width: 100%;
+  height:auto;
+  }
+
+body {
+  background-color: rgb(177, 134, 134);
+}
+.card {
+  background-color: blanchedalmond;
+}
