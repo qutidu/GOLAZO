@@ -15,9 +15,10 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-secondary">
   <a class="navbar-brand text-white "><h1 style="font-family:'Times New Roman', Times, serif; font-size: 3rem;">GOLAZO</h1></a>
-    <ul class="navbar-nav d-flex flex-row gap-5" style="font-family:'Times New Roman', Times, serif; font-size: 2rem;">
-        <li class="nav-item col-5-lg col-4"><a class="nav-link active text-white" aria-current="page" href="accueil.html">Accueil</a></li>
-        <li class="nav-item col-5-lg col-4"><a class="nav-link active text-white" aria-current="page" href="maillots.html">Maillots</a></li>
+    <ul class="navbar-nav d-flex flex-row gap-lg-5 gap-3" style="font-family:'Times New Roman', Times, serif; font-size: 2rem;">
+        <li class="nav-item "><a class="nav-link active text-white" aria-current="page" href="accueil.html">Accueil</a></li>
+        <li class="nav-item "><a class="nav-link active text-white" aria-current="page" href="maillots.html">Maillots</a></li>
+        <li class="nav-item "><a class="nav-link active text-white" aria-current="page" href="panier.html"><i class="fa-solid fa-cart-shopping"></i> Panier </a></li>
       </ul>
 </nav>
 <main>
@@ -294,5 +295,42 @@
   </div>
 </div>
 </footer>
+<!-- Modal -->
+<div class="modal fade" id="maillotModal" tabindex="-1" aria-labelledby="maillotModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="maillotModalLabel">Sélection du Maillot</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="maillotForm">
+          <div class="mb-3">
+            <label for="taille" class="form-label">Taille</label>
+            <select class="form-select" id="taille">
+              <option value="S">S</option>
+              <option value="M">M</option>
+              <option value="L">L</option>
+              <option value="XL">XL</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="quantite" class="form-label">Quantité</label>
+            <input type="number" class="form-control" id="quantite" min="1" value="1">
+          </div>
+        </form>
+        <!-- Message de confirmation (caché par défaut) -->
+        <div id="confirmationMessage" class="alert alert-success d-none mt-2"><p>
+          ✅ Le maillot a été ajouté au panier avec succès !</p>
+        </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+        <button type="button" class="btn btn-primary">Ajouter au panier</button>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 </html>
