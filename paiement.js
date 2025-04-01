@@ -32,20 +32,13 @@ document.addEventListener("DOMContentLoaded", function () {
     // Gestion du bouton "Enregistrer et continuer"
     const confirmerCommandeButton = document.getElementById("confirmer-commande");
     confirmerCommandeButton.addEventListener("click", function () {
-        // Récupérer les données du formulaire
         const email = document.getElementById("email").value;
         const prenom = document.getElementById("prenom").value;
         const nom = document.getElementById("nom").value;
         const adresse = document.getElementById("adresse").value;
         const telephone = document.getElementById("telephone").value;
+        const panier = JSON.parse(localStorage.getItem("panier")) || [];
 
-        // Valider les champs obligatoires
-        if (!email || !prenom || !nom || !adresse || !telephone) {
-            alert("Veuillez remplir tous les champs obligatoires.");
-            return;
-        }
-
-        // Envoyer les données au serveur
         fetch("http://localhost:3000/submit-form", {
             method: "POST",
             headers: {

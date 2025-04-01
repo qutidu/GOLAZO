@@ -1,31 +1,29 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const cors = require("cors"); // Importer cors
 
 const app = express();
 const PORT = 3000;
 
-// Middleware pour traiter les données JSON et les données de formulaire
+// Middleware pour activer CORS avec des options spécifiques
+app.use(cors({
+    origin: "http://127.0.0.1:5500", // Autoriser uniquement cette origine
+    methods: ["GET", "POST", "OPTIONS"], // Autoriser ces méthodes
+    allowedHeaders: ["Content-Type"], // Autoriser ces en-têtes
+    credentials: true, // Autoriser les cookies si nécessaire
+}));
+
+// Middleware pour parser le JSON et les requêtes URL-encoded
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Route pour recevoir les données du formulaire
 app.post("/submit-form", (req, res) => {
-    const { email, prenom, nom, adresse, telephone, panier } = req.body;
-
-    console.log("Données reçues :");
-    console.log("Email :", email);
-    console.log("Prénom :", prenom);
-    console.log("Nom :", nom);
-    console.log("Adresse :", adresse);
-    console.log("Téléphone :", telephone);
-    console.log("Panier :", panier);
-
-    // Répondre au client
-    res.status(200).send("Formulaire reçu avec succès !");
+    console.log("Données reçues :", req.body);
+    res.status(200).json({ message: "Formulaire reçu avec succès !" });
 });
 
 // Démarrer le serveur
 app.listen(PORT, () => {
-    console.log(`Serveur démarré sur http://lo
-        calhost:${PORT}`);
+    console.log(`Serveur démarré sur http://localhost:${PORT}`);
 });

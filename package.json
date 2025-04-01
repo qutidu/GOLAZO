@@ -1,0 +1,26 @@
+{
+  "name": "projet_",
+  "version": "1.0.0",
+  "main": "maillots.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/qutidu/GOLAZO.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/qutidu/GOLAZO/issues"
+  },
+  "homepage": "https://github.com/qutidu/GOLAZO#readme",
+  "description": "",
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "cors": "^2.8.5",
+    "express": "^5.1.0"
+  }
+}
