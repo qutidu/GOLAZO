@@ -40,10 +40,10 @@ MongoClient.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true 
     .then((client) => {
         db = client.db("formResponses");  // Le nom de ta base de données
         collection = db.collection("responses"); // Le nom de la collection
-        console.log("Connecté à MongoDB");
+        console.log("Connecté à MongoDB avec succès !");
     })
     .catch((err) => {
-        console.error("Erreur de connexion à MongoDB:", err);
+        console.error("Erreur de connexion à MongoDB :", err);
     });
 
 // Route pour recevoir les données du formulaire et les stocker dans MongoDB
