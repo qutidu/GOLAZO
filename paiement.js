@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const telephone = document.getElementById("telephone").value;
         const panier = JSON.parse(localStorage.getItem("panier")) || [];
 
-        fetch("http://localhost:3000/submit-form", {
+        fetch("https://golazo-ksp7.onrender.com", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
