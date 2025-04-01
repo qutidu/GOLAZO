@@ -1,9 +1,10 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const fs = require("fs");
 
 const app = express();
-const PORT = process.env.PORT || 3000; // Utiliser le port Render si dispo
+const PORT = process.env.PORT || 3000;
 
 // Middleware pour activer CORS avec la bonne origine
 app.use(cors({
@@ -13,10 +14,6 @@ app.use(cors({
     credentials: true,
 }));
 
-// Middleware pour parser le JSON et les requêtes URL-encoded
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-
 // Middleware global pour gérer les requêtes OPTIONS manuellement
 app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "https://golazo-ksp7.onrender.com");
@@ -25,15 +22,38 @@ app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Credentials", "true");
 
     if (req.method === "OPTIONS") {
-        return res.sendStatus(204); // Répond immédiatement aux pré-requêtes
+        return res.sendStatus(204);
     }
     next();
 });
 
-// Route pour recevoir les données du formulaire
+// Middleware pour parser le JSON et les requêtes URL-encoded
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// Route pour recevoir les données du formulaire et les stocker
 app.post("/submit-form", (req, res) => {
     console.log("Données reçues :", req.body);
-    res.status(200).json({ message: "Formulaire reçu avec succès !" });
+
+    // Lire les réponses existantes ou créer un fichier vide
+    let responses = [];
+    if (fs.existsSync("responses.json")) {
+        const data = fs.readFileSync("responses.json");
+        responses = JSON.parse(data);
+    }
+
+    // Ajouter la nouvelle réponse
+    responses.push(req.body);
+
+    // Sauvegarder dans le fichier
+    try {
+        fs.writeFileSync("responses.json", JSON.stringify(responses, null, 2));
+        console.log("Données sauvegardées dans responses.json");
+        res.status(200).json({ message: "Formulaire reçu avec succès !" });
+    } catch (error) {
+        console.error("Erreur lors de la sauvegarde des données :", error);
+        res.status(500).json({ message: "Erreur lors de la sauvegarde des données." });
+    }
 });
 
 // Démarrer le serveur
