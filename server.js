@@ -35,24 +35,32 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.post("/submit-form", (req, res) => {
     console.log("Données reçues :", req.body);
 
-    // Lire les réponses existantes ou créer un fichier vide
     let responses = [];
     if (fs.existsSync("responses.json")) {
         const data = fs.readFileSync("responses.json");
         responses = JSON.parse(data);
     }
 
-    // Ajouter la nouvelle réponse
     responses.push(req.body);
 
-    // Sauvegarder dans le fichier
     try {
         fs.writeFileSync("responses.json", JSON.stringify(responses, null, 2));
-        console.log("Données sauvegardées dans responses.json");
+        console.log("Données sauvegardées dans responses.json :", responses);
         res.status(200).json({ message: "Formulaire reçu avec succès !" });
     } catch (error) {
         console.error("Erreur lors de la sauvegarde des données :", error);
         res.status(500).json({ message: "Erreur lors de la sauvegarde des données." });
+    }
+});
+
+// Route pour récupérer les réponses stockées
+app.get("/responses", (req, res) => {
+    if (fs.existsSync("responses.json")) {
+        const data = fs.readFileSync("responses.json");
+        const responses = JSON.parse(data);
+        res.status(200).json(responses);
+    } else {
+        res.status(404).json({ message: "Aucune donnée trouvée." });
     }
 });
 
