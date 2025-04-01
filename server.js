@@ -1,10 +1,14 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const fs = require("fs");
+const { MongoClient } = require("mongodb");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// Connexion à MongoDB (remplace par ton URL MongoDB Atlas ou ta connexion locale)
+const mongoURI = "mongodb+srv://alfred:<coug>@cluster0.yerknku.mongodb.net/formResponses?retryWrites=true&w=majority"; // Remplace par ta connexion MongoDB
+let db, collection;
 
 // Middleware pour activer CORS avec la bonne origine
 app.use(cors({
@@ -31,37 +35,41 @@ app.use((req, res, next) => {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Route pour recevoir les données du formulaire et les stocker
+// Connexion à MongoDB avant de démarrer le serveur
+MongoClient.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then((client) => {
+        db = client.db("formResponses");  // Le nom de ta base de données
+        collection = db.collection("responses"); // Le nom de la collection
+        console.log("Connecté à MongoDB");
+    })
+    .catch((err) => {
+        console.error("Erreur de connexion à MongoDB:", err);
+    });
+
+// Route pour recevoir les données du formulaire et les stocker dans MongoDB
 app.post("/submit-form", (req, res) => {
     console.log("Données reçues :", req.body);
 
-    let responses = [];
-    if (fs.existsSync("responses.json")) {
-        const data = fs.readFileSync("responses.json");
-        responses = JSON.parse(data);
-    }
-
-    responses.push(req.body);
-
-    try {
-        fs.writeFileSync("responses.json", JSON.stringify(responses, null, 2));
-        console.log("Données sauvegardées dans responses.json :", responses);
-        res.status(200).json({ message: "Formulaire reçu avec succès !" });
-    } catch (error) {
-        console.error("Erreur lors de la sauvegarde des données :", error);
-        res.status(500).json({ message: "Erreur lors de la sauvegarde des données." });
-    }
+    collection.insertOne(req.body)
+        .then(() => {
+            res.status(200).json({ message: "Formulaire reçu avec succès !" });
+        })
+        .catch((err) => {
+            console.error("Erreur lors de la sauvegarde des données dans MongoDB :", err);
+            res.status(500).json({ message: "Erreur lors de la sauvegarde des données." });
+        });
 });
 
-// Route pour récupérer les réponses stockées
+// Route pour récupérer les réponses stockées dans MongoDB
 app.get("/responses", (req, res) => {
-    if (fs.existsSync("responses.json")) {
-        const data = fs.readFileSync("responses.json");
-        const responses = JSON.parse(data);
-        res.status(200).json(responses);
-    } else {
-        res.status(404).json({ message: "Aucune donnée trouvée." });
-    }
+    collection.find().toArray()
+        .then((responses) => {
+            res.status(200).json(responses);
+        })
+        .catch((err) => {
+            console.error("Erreur lors de la récupération des données depuis MongoDB :", err);
+            res.status(500).json({ message: "Erreur lors de la récupération des données." });
+        });
 });
 
 // Démarrer le serveur
