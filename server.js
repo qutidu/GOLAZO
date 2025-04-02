@@ -7,7 +7,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Connexion à MongoDB
-const mongoURI = process.env.MONGODB_URI; 
+const mongoURI = "mongodb+srv://alfrcoug99:OaAHsYyYowaKdZil@cluster0.75vwqwp.mongodb.net/formResponses?retryWrites=true&w=majority"; 
 
 let db, collection;
 
