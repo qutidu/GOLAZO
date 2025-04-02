@@ -1,9 +1,9 @@
 {
-  "name": "projet_",
+  "name": "golazo",
   "version": "1.0.0",
-  "main": "maillots.js",
+  "description": "Application Node.js pour gérer les formulaires",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
   "repository": {
@@ -17,11 +17,10 @@
     "url": "https://github.com/qutidu/GOLAZO/issues"
   },
   "homepage": "https://github.com/qutidu/GOLAZO#readme",
-  "description": "",
   "dependencies": {
-    "body-parser": "^2.2.0",
+    "express": "^4.18.2",
+    "body-parser": "^1.20.2",
     "cors": "^2.8.5",
-    "express": "^5.1.0",
-    "mongodb": "^6.15.0"
+    "mongodb": "^4.13.0"
   }
 }
