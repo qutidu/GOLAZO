@@ -42,35 +42,47 @@ mongoose.connect(mongoURI, {
     .then(() => console.log("✅ Connecté à MongoDB avec succès via Mongoose !"))
     .catch((err) => console.error("❌ Erreur de connexion à MongoDB :", err));
 
-// Exemple de modèle Mongoose
-const ResponseSchema = new mongoose.Schema({
-    name: String,
+// Exemple de modèle Mongoose pour enregistrer une commande
+const CommandeSchema = new mongoose.Schema({
     email: String,
-    message: String,
+    prenom: String,
+    nom: String,
+    adresse: String,
+    telephone: String,
+    panier: [
+        {
+            nom: String,
+            taille: String,
+            quantite: Number,
+            prix: Number,
+            image: String
+        }
+    ]
 }, { timestamps: true });
 
-const Response = mongoose.model("Response", ResponseSchema);
+const Commande = mongoose.model("Commande", CommandeSchema);
 
-// Route POST pour enregistrer un formulaire
-app.post("/submit-form", async (req, res) => {
+// Route POST pour enregistrer une commande
+app.post("/soumettre-commande", async (req, res) => {
     try {
-        const newResponse = new Response(req.body);
-        await newResponse.save();
-        console.log("📩 Données enregistrées :", req.body);
-        res.status(200).json({ message: "✅ Formulaire reçu avec succès !" });
-    } catch (err) {
-        console.error("❌ Erreur lors de l'enregistrement :", err);
-        res.status(500).json({ message: "❌ Une erreur est survenue." });
-    }
-});
+        const { email, prenom, nom, adresse, telephone, panier } = req.body;
 
-// Route GET pour récupérer les réponses
-app.get("/responses", async (req, res) => {
-    try {
-        const responses = await Response.find();
-        res.status(200).json(responses);
+        // Créer un nouveau document pour la commande
+        const newCommande = new Commande({
+            email,
+            prenom,
+            nom,
+            adresse,
+            telephone,
+            panier,
+        });
+
+        await newCommande.save();
+        console.log("📩 Commande enregistrée :", req.body);
+
+        res.status(200).json({ message: "✅ Commande reçue avec succès !" });
     } catch (err) {
-        console.error("❌ Erreur lors de la récupération des données :", err);
+        console.error("❌ Erreur lors de l'enregistrement de la commande :", err);
         res.status(500).json({ message: "❌ Une erreur est survenue." });
     }
 });

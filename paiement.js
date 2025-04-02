@@ -32,14 +32,22 @@ document.addEventListener("DOMContentLoaded", function () {
     // Gestion du bouton "Enregistrer et continuer"
     const confirmerCommandeButton = document.getElementById("confirmer-commande");
     confirmerCommandeButton.addEventListener("click", function () {
+        // Vérification des champs du formulaire
         const email = document.getElementById("email").value;
         const prenom = document.getElementById("prenom").value;
         const nom = document.getElementById("nom").value;
         const adresse = document.getElementById("adresse").value;
         const telephone = document.getElementById("telephone").value;
+
+        if (!email || !prenom || !nom || !adresse || !telephone) {
+            alert("Veuillez remplir tous les champs obligatoires.");
+            return; // Empêche l'envoi si les champs sont vides
+        }
+
         const panier = JSON.parse(localStorage.getItem("panier")) || [];
 
-        fetch("https://golazo-ksp7.onrender.com", {
+        // Envoi des données au serveur avec fetch
+        fetch("https://golazo-ksp7.onrender.com/soumettre-commande", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -59,7 +67,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     localStorage.removeItem("panier"); // Vider le panier après confirmation
                     window.location.href = "accueil.html"; // Rediriger vers la page d'accueil
                 } else {
-                    alert("Une erreur est survenue lors de la soumission du formulaire.");
+                    return response.json().then(data => {
+                        // Si le serveur retourne un message d'erreur spécifique
+                        alert(data.message || "Une erreur est survenue lors de la soumission du formulaire.");
+                    });
                 }
             })
             .catch(error => {
