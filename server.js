@@ -6,8 +6,8 @@ const { MongoClient } = require("mongodb");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Connexion à MongoDB (REMPLACE "<password>" par ton vrai mot de passe)
-const mongoURI = "mongodb+srv://alfred:coug@cluster0.yerknku.mongodb.net/formResponses?retryWrites=true&w=majority"; 
+// Connexion à MongoDB
+const mongoURI = process.env.MONGODB_URI; 
 
 let db, collection;
 
@@ -43,12 +43,11 @@ async function connectToMongoDB() {
             useNewUrlParser: true,
             useUnifiedTopology: true
         });
-        db = client.db("formResponses"); // Nom de la base
-        collection = db.collection("responses"); // Nom de la collection
+        db = client.db("formResponses");
+        collection = db.collection("responses");
         console.log("✅ Connecté à MongoDB avec succès !");
     } catch (err) {
         console.error("❌ Erreur de connexion à MongoDB :", err);
-        process.exit(1); // Quitte l'application si la connexion échoue
     }
 }
 connectToMongoDB();
