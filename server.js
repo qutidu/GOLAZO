@@ -32,6 +32,11 @@ app.use((req, res, next) => {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+const path = require("path");
+
+// Servir les fichiers statiques du dossier actuel (où accueil.html est situé)
+app.use(express.static(__dirname));
+
 // Connexion à MongoDB avec Mongoose
 const mongoURI = process.env.MONGODB_URI;
 
@@ -82,6 +87,10 @@ app.post("/soumettre-commande", async (req, res) => {
         console.error("❌ Erreur lors de l'enregistrement de la commande :", err);
         res.status(500).json({ message: "❌ Une erreur est survenue." });
     }
+});
+
+app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname, "accueil.html"));
 });
 
 // Démarrage du serveur
