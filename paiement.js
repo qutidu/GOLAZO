@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const panier = JSON.parse(localStorage.getItem("panier")) || [];
 
         // Envoi des données au serveur avec fetch
-        fetch("https://golazo-ksp7.onrender.com/soumettre-commande", {
+        fetch("https://golazo2.onrender.com/soumettre-commande", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
