@@ -5,7 +5,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 10000;
 
 // Middleware pour activer CORS
 app.use(cors({
@@ -35,10 +35,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Connexion à MongoDB avec Mongoose
 const mongoURI = process.env.MONGODB_URI;
 
-mongoose.connect(mongoURI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-})
+mongoose.connect(mongoURI)
     .then(() => console.log("✅ Connecté à MongoDB avec succès via Mongoose !"))
     .catch((err) => console.error("❌ Erreur de connexion à MongoDB :", err));
 
