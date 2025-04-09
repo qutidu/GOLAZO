@@ -15,6 +15,7 @@ app.use(cors({
     credentials: true,
 }));
 
+
 // Middleware global pour gérer les requêtes OPTIONS
 app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "https://golazo-ksp7.onrender.com");
