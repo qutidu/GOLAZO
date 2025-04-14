@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 10000;
 
 // Middleware pour activer CORS
 app.use(cors({
-    origin: ["https://golazo-ksp7.onrender.com"],
+    origin: ["https://golazo2.onrender.com"],
     methods: ["GET", "POST", "OPTIONS"],
     allowedHeaders: ["Content-Type"],
     credentials: true,
@@ -18,7 +18,7 @@ app.use(cors({
 
 // Middleware global pour gérer les requêtes OPTIONS
 app.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "https://golazo-ksp7.onrender.com");
+    res.setHeader("Access-Control-Allow-Origin", "https://golazo2.onrender.com");
     res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
     res.setHeader("Access-Control-Allow-Headers", "Content-Type");
     res.setHeader("Access-Control-Allow-Credentials", "true");
