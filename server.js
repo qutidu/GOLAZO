@@ -111,7 +111,7 @@ async function envoyerEmailCommande(commande) {
                 Messages: [
                     {
                         From: {
-                            Email: "ton-email@ton-domaine.com", // Ton email d'envoi validé sur Mailjet
+                            Email: "alfrcoug99@gmail.com", // Ton email d'envoi validé sur Mailjet
                             Name: "Golazo"
                         },
                         To: [
