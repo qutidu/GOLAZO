@@ -3,6 +3,9 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const mongoose = require("mongoose");
+const mailjet = require('node-mailjet')
+    .connect(process.env.MJ_APIKEY_PUBLIC, process.env.MJ_APIKEY_PRIVATE);
+
 
 const app = express();
 const PORT = process.env.PORT || 10000;
@@ -83,6 +86,8 @@ app.post("/soumettre-commande", async (req, res) => {
         await newCommande.save();
         console.log("📩 Commande enregistrée :", req.body);
 
+        await envoyerEmailCommande(newCommande);
+
         res.status(200).json({ message: "✅ Commande reçue avec succès !" });
     } catch (err) {
         console.error("❌ Erreur lors de l'enregistrement de la commande :", err);
@@ -93,6 +98,45 @@ app.post("/soumettre-commande", async (req, res) => {
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "accueil.html"));
 });
+
+async function envoyerEmailCommande(commande) {
+    try {
+        const request = mailjet
+            .post("send", { version: 'v3.1' })
+            .request({
+                Messages: [
+                    {
+                        From: {
+                            Email: "ton-email@ton-domaine.com", // Ton email d'envoi validé sur Mailjet
+                            Name: "Golazo"
+                        },
+                        To: [
+                            {
+                                Email: "ton-email-de-reception@example.com", // Où tu veux recevoir les commandes
+                                Name: "Admin Golazo"
+                            }
+                        ],
+                        Subject: `Nouvelle commande de ${commande.prenom} ${commande.nom}`,
+                        TextPart: `Une nouvelle commande a été passée.\n\nDétails:\nEmail: ${commande.email}\nTéléphone: ${commande.telephone}\nAdresse: ${commande.adresse}\n\nPanier:\n${commande.panier.map(item => `${item.nom} - Taille: ${item.taille} - Quantité: ${item.quantite} - Prix: ${item.prix}€`).join('\n')}`,
+                        HTMLPart: `<h3>Nouvelle commande passée</h3>
+                                   <p><strong>Email:</strong> ${commande.email}</p>
+                                   <p><strong>Nom:</strong> ${commande.prenom} ${commande.nom}</p>
+                                   <p><strong>Téléphone:</strong> ${commande.telephone}</p>
+                                   <p><strong>Adresse:</strong> ${commande.adresse}</p>
+                                   <h4>Panier</h4>
+                                   <ul>
+                                   ${commande.panier.map(item => `<li>${item.nom} - Taille: ${item.taille} - Quantité: ${item.quantite} - Prix: ${item.prix}€</li>`).join('')}
+                                   </ul>`
+                    }
+                ]
+            });
+
+        await request;
+        console.log("✉️ Email de commande envoyé avec succès !");
+    } catch (err) {
+        console.error("❌ Erreur lors de l'envoi de l'email :", err);
+    }
+}
 
 // Démarrage du serveur
 app.listen(PORT, () => {
