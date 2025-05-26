@@ -116,7 +116,7 @@ async function envoyerEmailCommande(commande) {
                         },
                         To: [
                             {
-                                Email: "ton-email-de-reception@example.com", // Où tu veux recevoir les commandes
+                                Email: "qutidu31@gmail.com", // Où tu veux recevoir les commandes
                                 Name: "Admin Golazo"
                             }
                         ],
