@@ -8,12 +8,6 @@ const mailjet = Mailjet.apiConnect(
     process.env.MJ_APIKEY_PUBLIC,
     process.env.MJ_APIKEY_PRIVATE
 );
-const twilio = require('twilio');
-const twilioClient = twilio(
-  process.env.TWILIO_ACCOUNT_SID,
-  process.env.TWILIO_AUTH_TOKEN
-);
-
 
 
 
@@ -97,7 +91,6 @@ app.post("/soumettre-commande", async (req, res) => {
         console.log("📩 Commande enregistrée :", req.body);
 
         await envoyerEmailCommande(newCommande);
-        await envoyerSMSCommande(newCommande);
 
 
         res.status(200).json({ message: "✅ Commande reçue avec succès !" });
@@ -149,22 +142,6 @@ async function envoyerEmailCommande(commande) {
         console.error("❌ Erreur lors de l'envoi de l'email :", err);
     }
 }
-
-async function envoyerSMSCommande(commande) {
-    try {
-        const message = await twilioClient.messages.create({
-            body: `📦 Commande de ${commande.prenom} ${commande.nom} (${commande.email})\nTéléphone: ${commande.telephone}\nArticles: ${commande.panier.length}`,
-            from: process.env.TWILIO_PHONE,
-            to: process.env.ADMIN_PHONE
-        });
-
-        console.log("📲 SMS envoyé avec succès :", message.sid);
-    } catch (err) {
-        console.error("❌ Erreur lors de l'envoi du SMS :", err);
-    }
-}
-
-
 
 // Démarrage du serveur
 app.listen(PORT, () => {
