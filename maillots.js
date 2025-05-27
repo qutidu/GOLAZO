@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const addToCartButtons = document.querySelectorAll('.btn-success'); // Cible tous les boutons "Acheter"
+    const addToCartButtons = document.querySelectorAll('.btn-info'); // Cible tous les boutons "Acheter"
     const modalTitle = document.getElementById('maillotModalLabel');
     const modalImage = document.getElementById('maillotModalImage'); // Cible l'image dans le modal
 
