@@ -35,7 +35,7 @@ body::before {
 
 /* Supprime ou commente body::after si tu ne veux pas le ballon en bas à droite */
 .card {
-  background-color: rgb(88, 121, 228);
+  background: linear-gradient(90deg, #2563eb 0%, #60a5fa 100%);
 }
 
 .navbar-golazo {
